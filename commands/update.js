@@ -15,6 +15,6 @@ module.exports = {
             }
         }
 
-        console.log(jwt.sign(decodedToken, fs.readFileSync(args["k"], "utf8").trim()));
+        jwt.sign(decodedToken, fs.readFileSync(args["k"], "utf8").trim());
     }
 }

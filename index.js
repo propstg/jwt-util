@@ -11,7 +11,7 @@ const processors = [
 const args = require("minimist")(process.argv.slice(2));
 
 try {
-    processors
+    let response = processors
         .filter(processor => processor.canProcess(args))
         .map(processor => {
             if (processor.requiresKey && !args["k"]) {
@@ -19,6 +19,12 @@ try {
             }
             return processor;
         })[0].process(args);
+
+    if (typeof response === "string") {
+        console.log(response);
+    } else {
+        console.dir(response);
+    }
 } catch(e) {
     console.error("Error: ", e.message);
 }
