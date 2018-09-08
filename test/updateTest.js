@@ -1,26 +1,26 @@
-const expect = require("chai").expect;
-const update = require("../commands/update");
+const assert = require("assert");
 const jwt = require("jsonwebtoken");
+const update = require("../commands/update");
 
 describe("update.canProcess", () => {
 
     it("can process when 'u' argument provided", () => {
         const args = {"u": "asdf"};
         const canProcess = update.canProcess(args) ? true : false;
-        expect(canProcess).to.be.true;
+        assert.equal(canProcess, true);
     });
 
     it("cannot process when 'u' argument not provided", () => {
         const args = {"not u": "asdf"};
         const canProcess = update.canProcess(args) ? true : false;
-        expect(canProcess).to.be.false;
+        assert.equal(canProcess, false);
     });
 });
 
 describe("update.requiresKey", () => {
 
     it("requires key", () => {
-        expect(update.requiresKey).to.be.true;
+        assert.equal(update.requiresKey, true);
     });
 });
 
@@ -45,7 +45,7 @@ describe("update.process", () => {
             }
         };
 
-        expect(decodedToken.payload).to.deep.equal(expectedToken.payload);
+        assert.deepEqual(decodedToken.payload, expectedToken.payload);
     });
 
     it("returns token with numeric update", () => {
@@ -58,8 +58,8 @@ describe("update.process", () => {
 
         const decodedToken = jwt.decode(update.process(args), {"complete": false});
 
-        expect(decodedToken.payload.exp).to.be.equal(1900000000);
-        expect(decodedToken.payload.newValue).to.be.equal(1000);
+        assert.equal(decodedToken.payload.exp, 1900000000);
+        assert.equal(decodedToken.payload.newValue, 1000);
     });
 
     it("returns token with string update", () => {
@@ -72,8 +72,8 @@ describe("update.process", () => {
 
         const decodedToken = jwt.decode(update.process(args), {"complete": false});
 
-        expect(decodedToken.payload.newValue).to.be.equal("new value");
-        expect(decodedToken.payload.name).to.be.equal("John Dooe");
+        assert.equal(decodedToken.payload.newValue, "new value");
+        assert.equal(decodedToken.payload.name, "John Dooe");
     });
 
     it("returns token with eval'd updates", () => {
@@ -86,8 +86,8 @@ describe("update.process", () => {
 
         const decodedToken = jwt.decode(update.process(args), {"complete": false});
 
-        expect(decodedToken.payload.newValue).to.be.equal("new value");
-        expect(decodedToken.payload.groups).to.deep.equal(['fdsa', 'fdsa2']);
+        assert.equal(decodedToken.payload.newValue, "new value");
+        assert.deepEqual(decodedToken.payload.groups, ['fdsa', 'fdsa2']);
     });
 
     it("throws exception when invalid signature", () => {
@@ -96,6 +96,6 @@ describe("update.process", () => {
             "k": "./test/secret2.pem"
         };
 
-        expect(() => update.process(args)).to.throw("invalid signature");
+        assert.throws(() => update.process(args), {message: "invalid signature"});
     });
 });

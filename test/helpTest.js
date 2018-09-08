@@ -1,4 +1,4 @@
-const expect = require("chai").expect;
+const assert = require("assert");
 const help = require("../commands/help");
 
 describe("help.canProcess", () => {
@@ -6,20 +6,20 @@ describe("help.canProcess", () => {
     it("can process when 'help' argument provided", () => {
         const args = {"help": true};
         const canProcess = help.canProcess(args) ? true : false;
-        expect(canProcess).to.be.true;
+        assert.equal(canProcess, true);
     });
 
     it("cannot process when 'help' argument not provided", () => {
         const args = {"not help": "asdf"};
         const canProcess = help.canProcess(args) ? true : false;
-        expect(canProcess).to.be.false;
+        assert.equal(canProcess, false);
     });
 });
 
 describe("help.requiresKey", () => {
 
     it("does not require key", () => {
-        expect(help.requiresKey).to.be.false;
+        assert.equal(help.requiresKey, false);
     });
 });
 
@@ -30,6 +30,6 @@ describe("help.process", () => {
 
         const response = help.process(args);
 
-        expect(response).to.be.equal(`Available commands:\nDecode jwt: -d jwt\nVerify jwt: -v jwt -k secret.pem\nUpdate jwt: -u jwt -k secret.pem --ekeyName="[\'text\', \'to\', \'be\', \'evaluated\', \'and\', \'saved\']" --ckeyName2="no evaluation"`);
+        assert.equal(response, `Available commands:\nDecode jwt: -d jwt\nVerify jwt: -v jwt -k secret.pem\nUpdate jwt: -u jwt -k secret.pem --ekeyName="[\'text\', \'to\', \'be\', \'evaluated\', \'and\', \'saved\']" --ckeyName2="no evaluation"`);
     });
 });

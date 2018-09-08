@@ -1,4 +1,4 @@
-const expect = require("chai").expect;
+const assert = require("assert");
 const verify = require("../commands/verify");
 
 describe("verify.canProcess", () => {
@@ -6,20 +6,20 @@ describe("verify.canProcess", () => {
     it("can process when 'v' argument provided", () => {
         const args = {"v": "asdf"};
         const canProcess = verify.canProcess(args) ? true : false;
-        expect(canProcess).to.be.true;
+        assert.equal(canProcess, true);
     });
 
     it("cannot process when 'v' argument not provided", () => {
         const args = {"not v": "asdf"};
         const canProcess = verify.canProcess(args) ? true : false;
-        expect(canProcess).to.be.false;
+        assert.equal(canProcess, false);
     });
 });
 
 describe("verify.requiresKey", () => {
 
     it("requires key", () => {
-        expect(verify.requiresKey).to.be.true;
+        assert.equal(verify.requiresKey, true);
     });
 });
 
@@ -49,16 +49,7 @@ describe("verify.process", () => {
             iat: 1536341253
         };
 
-        expect(decodedToken).to.deep.equal(expectedToken);
-    });
-
-    it("throws exception when expired token", () => {
-        const args = {
-            "v": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoZWFkZXIiOnsiYWxnIjoiSFMyNTYiLCJ0eXAiOiJKV1QifSwicGF5bG9hZCI6eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIsImV4cCI6MSwiZ3JvdXBzIjpbImFzZGYiLCJhc2RmMiJdfSwic2lnbmF0dXJlIjoiUTZMT29PaDBCMGxBU0xVV2F0SnZjVGZqYUpYSDhGRk1nZmRoZ0NRWTRvVSIsImlhdCI6MTUzNjM0MTI1M30.Pa0RRNSZ0JKWnxMIqO9rA4Y74Ntabbhg9yXaCR2ovGA",
-            "k": "./test/secret.pem"
-        };
-
-        expect(() => verify.process(args)).to.throw("invalid signature");
+        assert.deepEqual(decodedToken, expectedToken);
     });
 
     it("throws exception when invalid signature", () => {
@@ -67,6 +58,6 @@ describe("verify.process", () => {
             "k": "./test/secret2.pem"
         };
 
-        expect(() => verify.process(args)).to.throw("invalid signature");
+        assert.throws(() => verify.process(args), {message: "invalid signature"});
     });
 });

@@ -1,4 +1,4 @@
-const expect = require("chai").expect;
+const assert = require("assert");
 const decode = require("../commands/decode");
 
 describe("decode.canProcess", () => {
@@ -6,20 +6,20 @@ describe("decode.canProcess", () => {
     it("can process when 'd' argument provided", () => {
         const args = {"d": "asdf"};
         const canProcess = decode.canProcess(args) ? true : false;
-        expect(canProcess).to.be.true;
+        assert.equal(canProcess, true);
     });
 
     it("cannot process when 'd' argument not provided", () => {
         const args = {"not d": "asdf"};
         const canProcess = decode.canProcess(args) ? true : false;
-        expect(canProcess).to.be.false;
+        assert.equal(canProcess, false);
     });
 });
 
 describe("decode.requiresKey", () => {
 
     it("does not require key", () => {
-        expect(decode.requiresKey).to.be.false;
+        assert.equal(decode.requiresKey, false);
     });
 });
 
@@ -46,6 +46,6 @@ describe("decode.process", () => {
             iat: 1536341253
         };
 
-        expect(decodedToken).to.deep.equal(expectedToken);
+        assert.deepEqual(decodedToken, expectedToken);
     });
 });
