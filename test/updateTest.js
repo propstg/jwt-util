@@ -56,7 +56,7 @@ describe("update.process", () => {
             "cexp": 1900000000
         };
 
-        const decodedToken = jwt.decode(update.process(args), {"complete": false});
+        const decodedToken = jwt.decode(update.process(args), {"complete": true});
 
         assert.equal(decodedToken.payload.exp, 1900000000);
         assert.equal(decodedToken.payload.newValue, 1000);
@@ -70,7 +70,7 @@ describe("update.process", () => {
             "cname": "John Dooe"
         };
 
-        const decodedToken = jwt.decode(update.process(args), {"complete": false});
+        const decodedToken = jwt.decode(update.process(args), {"complete": true});
 
         assert.equal(decodedToken.payload.newValue, "new value");
         assert.equal(decodedToken.payload.name, "John Dooe");
@@ -84,18 +84,9 @@ describe("update.process", () => {
             "enewValue": "'new value'"
         };
 
-        const decodedToken = jwt.decode(update.process(args), {"complete": false});
+        const decodedToken = jwt.decode(update.process(args), {"complete": true});
 
         assert.equal(decodedToken.payload.newValue, "new value");
         assert.deepEqual(decodedToken.payload.groups, ['fdsa', 'fdsa2']);
-    });
-
-    it("throws exception when invalid signature", () => {
-        const args = {
-            "u": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoZWFkZXIiOnsiYWxnIjoiSFMyNTYiLCJ0eXAiOiJKV1QifSwicGF5bG9hZCI6eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIsImV4cCI6MTcwMDAwMDAwMCwiZ3JvdXBzIjpbImFzZGYiLCJhc2RmMiJdfSwic2lnbmF0dXJlIjoiUTZMT29PaDBCMGxBU0xVV2F0SnZjVGZqYUpYSDhGRk1nZmRoZ0NRWTRvVSIsImlhdCI6MTUzNjM0MTI1M30.XvkqRZa9XBy_tmDjaOlYc83BV3hFlOCOldvTBahNmvg",
-            "k": "./test/secret2.pem"
-        };
-
-        assert.throws(() => update.process(args), {message: "invalid signature"});
     });
 });

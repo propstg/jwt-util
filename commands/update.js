@@ -6,7 +6,8 @@ module.exports = {
     requiresKey: true,
     process: args => {
 		const key = fs.readFileSync(args["k"], "utf8").trim();
-        let decodedToken = jwt.verify(args["u"], key);
+        let decodedToken = jwt.decode(args["u"], {complete: true});
+
         for (arg in args) {
             if (arg.charAt(0) == "e") {
                 decodedToken.payload[arg.substr(1)] = eval(args[arg]);
@@ -15,6 +16,6 @@ module.exports = {
             }
         }
 
-        return jwt.sign(decodedToken, key);
+        return jwt.sign(decodedToken.payload, key);
     }
 }
