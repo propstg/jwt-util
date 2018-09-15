@@ -52,6 +52,15 @@ describe("verify.process", () => {
         assert.deepEqual(decodedToken, expectedToken);
     });
 
+    it("throws exception when expired", () => {
+        const args = {
+            "v": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjF9.RID4t3CEYqt3KVmH53-I3uKxn7tXGNt1JvtUmQxVDQo",
+            "k": "./test/secret.pem"
+        };
+
+        assert.throws(() => verify.process(args), {message: "jwt expired"});
+    });
+
     it("throws exception when invalid signature", () => {
         const args = {
             "v": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJoZWFkZXIiOnsiYWxnIjoiSFMyNTYiLCJ0eXAiOiJKV1QifSwicGF5bG9hZCI6eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIsImV4cCI6MTcwMDAwMDAwMCwiZ3JvdXBzIjpbImFzZGYiLCJhc2RmMiJdfSwic2lnbmF0dXJlIjoiUTZMT29PaDBCMGxBU0xVV2F0SnZjVGZqYUpYSDhGRk1nZmRoZ0NRWTRvVSIsImlhdCI6MTUzNjM0MTI1M30.XvkqRZa9XBy_tmDjaOlYc83BV3hFlOCOldvTBahNmvg",

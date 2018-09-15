@@ -89,4 +89,13 @@ describe("update.process", () => {
         assert.equal(decodedToken.payload.newValue, "new value");
         assert.deepEqual(decodedToken.payload.groups, ['fdsa', 'fdsa2']);
     });
+
+    it("does not throw exception when expired", () => {
+        const args = {
+            "u": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjF9.RID4t3CEYqt3KVmH53-I3uKxn7tXGNt1JvtUmQxVDQo",
+            "k": "./test/secret.pem"
+        };
+
+        update.process(args);
+    });
 });
